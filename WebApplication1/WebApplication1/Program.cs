@@ -1,5 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
-
+var redisConnectionString = builder.Configuration.GetSection("Redis:ConnectionString").Value;
+builder.Services.AddSingleton<WebApplication1.Utils.Redis>(new WebApplication1.Utils.Redis(redisConnectionString));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

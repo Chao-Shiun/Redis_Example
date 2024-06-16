@@ -35,5 +35,10 @@ namespace WebApplication1.Utils
         {
             return db.HashGetAll(key);
         }
+        
+        public bool DeleteKey(string key)
+        {
+            return db.KeyDelete(key);
+        }
     }
 }
