@@ -1,24 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers;
 
 public class KeyController(Utils.Redis redis) : Controller
 {
     [HttpPost]
-    public IActionResult Create([FromBody]string userName)
+    public IActionResult Create([FromBody]UserModel user)
     {
-        if (string.IsNullOrEmpty(userName))
+        if (string.IsNullOrEmpty(user.Name))
         {
             return Content("Invalid username");
         }
         var uuid = Guid.NewGuid().ToString();
-        redis.SetString(userName, uuid);
+        redis.SetString(user.Name, uuid);
         return Content(uuid);
     }
     [HttpPost]
-    public IActionResult Delete([FromBody]string key)
+    public IActionResult Delete([FromBody]UserModel user)
     {
-        var result= redis.DeleteKey(key);
+        var result= redis.DeleteKey(user.Name);
         if (result)
         {
             return Content("Key deleted");
@@ -28,9 +29,9 @@ public class KeyController(Utils.Redis redis) : Controller
         
     }
     [HttpPost]
-    public IActionResult GetKey([FromBody]string userName)
+    public IActionResult GetKey([FromBody]UserModel user)
     {
-        var keyResult= redis.GetString(userName);
+        var keyResult= redis.GetString(user.Name);
         return Content(keyResult);
     }
 }

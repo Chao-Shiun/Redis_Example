@@ -33,5 +33,5 @@ services:
       - REDIS_REPLICATION_MODE=slave
     command: >
       sh -c "
-        redis-server --appendonly yes --slaveof redis-master 6379 --masterauth yourpassword
+        redis-server --appendonly yes --slaveof redis-master 6379 --masterauth 1qaz2wsx
       "
