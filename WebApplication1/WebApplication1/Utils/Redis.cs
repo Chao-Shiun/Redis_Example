@@ -9,9 +9,15 @@ namespace WebApplication1.Utils
         private readonly IDatabase db;
         private readonly TimeSpan defaultExpiry = TimeSpan.FromMinutes(10);
 
-        public Redis(string configuration)
+        public Redis(string host, int port = 6379, string password = "")
         {
-            redis = ConnectionMultiplexer.Connect(configuration);
+            var configurationOptions = new ConfigurationOptions()
+            {
+                EndPoints = {{"localhost", 6379}},
+                Password = "1qaz2wsx"
+            };
+            
+            redis = ConnectionMultiplexer.Connect(configurationOptions);
             db = redis.GetDatabase();
         }
 

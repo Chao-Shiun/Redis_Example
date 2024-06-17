@@ -1,6 +1,37 @@
-﻿services:
-  webapplication1:
-    image: webapplication1
-    build:
-      context: .
-      dockerfile: WebApplication1/Dockerfile
+﻿version: '3.8'
+
+services:
+  redis-master:
+    image: redis:latest
+    container_name: redis-master
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --requirepass 1qaz2wsx
+
+  redis-slave1:
+    image: redis:latest
+    container_name: redis-slave1
+    ports:
+      - "6380:6379"
+    depends_on:
+      - redis-master
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+    command: >
+      sh -c "
+        redis-server --appendonly yes --slaveof redis-master 6379 --masterauth 1qaz2wsx
+      "
+
+  redis-slave2:
+    image: redis:latest
+    container_name: redis-slave2
+    ports:
+      - "6381:6379"
+    depends_on:
+      - redis-master
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+    command: >
+      sh -c "
+        redis-server --appendonly yes --slaveof redis-master 6379 --masterauth yourpassword
+      "

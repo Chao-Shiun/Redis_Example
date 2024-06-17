@@ -5,9 +5,14 @@ namespace WebApplication1.Controllers;
 public class KeyController(Utils.Redis redis) : Controller
 {
     [HttpPost]
-    public IActionResult Create()
+    public IActionResult Create([FromBody]string userName)
     {
+        if (string.IsNullOrEmpty(userName))
+        {
+            return Content("Invalid username");
+        }
         var uuid = Guid.NewGuid().ToString();
+        redis.SetString(userName, uuid);
         return Content(uuid);
     }
     [HttpPost]
@@ -23,9 +28,9 @@ public class KeyController(Utils.Redis redis) : Controller
         
     }
     [HttpPost]
-    public IActionResult GetKey([FromBody]string key)
+    public IActionResult GetKey([FromBody]string userName)
     {
-        var keyResult= redis.GetString(key);
+        var keyResult= redis.GetString(userName);
         return Content(keyResult);
     }
 }

@@ -1,6 +1,12 @@
+using StackExchange.Redis;
+
 var builder = WebApplication.CreateBuilder(args);
-var redisConnectionString = builder.Configuration.GetSection("Redis:ConnectionString").Value;
-builder.Services.AddSingleton<WebApplication1.Utils.Redis>(new WebApplication1.Utils.Redis(redisConnectionString));
+var redisHost = builder.Configuration.GetSection("Redis:ConnectionString").Value;
+var redisPort = int.Parse(builder.Configuration.GetSection("Redis:Port").Value);
+var redisPassword = builder.Configuration.GetSection("Redis:Password").Value;
+
+
+builder.Services.AddSingleton(new WebApplication1.Utils.Redis(redisHost,redisPort,redisPassword));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
