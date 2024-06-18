@@ -27,7 +27,7 @@ Console.WriteLine(configurationOptions.ToString());
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    options.Configuration = configurationOptions.ToString();
+    options.ConfigurationOptions = configurationOptions;
     options.InstanceName = "SampleInstance:";
 });
 
