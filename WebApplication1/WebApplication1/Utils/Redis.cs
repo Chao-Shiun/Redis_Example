@@ -13,8 +13,8 @@ namespace WebApplication1.Utils
         {
             var configurationOptions = new ConfigurationOptions()
             {
-                EndPoints = {{"localhost", 6379}},
-                Password = "1qaz2wsx"
+                EndPoints = {{host, port}},
+                Password = password
             };
             
             redis = ConnectionMultiplexer.Connect(configurationOptions);

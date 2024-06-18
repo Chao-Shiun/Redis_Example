@@ -13,25 +13,22 @@ public class KeyController(Utils.Redis redis) : Controller
             return Content("Invalid username");
         }
         var uuid = Guid.NewGuid().ToString();
-        redis.SetString(user.Name, uuid);
+        HttpContext.Session.SetString(user.Name,uuid);
         return Content(uuid);
     }
     [HttpPost]
     public IActionResult Delete([FromBody]UserModel user)
     {
-        var result= redis.DeleteKey(user.Name);
-        if (result)
-        {
-            return Content("Key deleted");
-        }else{
-            return Content("Key not found");
-        }
-        
+        HttpContext.Session.Remove(user.Name);
+
+        return NoContent();
     }
     [HttpPost]
     public IActionResult GetKey([FromBody]UserModel user)
     {
-        var keyResult= redis.GetString(user.Name);
+        var keyResult=HttpContext.Session.GetString(user.Name);
+        
+        // var keyResult= redis.GetString(user.Name);
         return Content(keyResult);
     }
 }
